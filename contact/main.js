@@ -1,5 +1,6 @@
 "use strict";
 
+///// for Bootstrap
 document.addEventListener("DOMContentLoaded", function(event) {
 
   var name = document.querySelector('#name');
@@ -55,3 +56,71 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }, false);
 
 });
+
+
+///// for Google Sign-In
+function onSuccess(googleUser) {
+  // Useful data for your client-side scripts:
+  var profile = googleUser.getBasicProfile();
+  console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+  console.log("Name: " + profile.getName());
+  console.log("Image URL: " + profile.getImageUrl());
+  console.log("Email: " + profile.getEmail());
+  var signindata = [
+    [".rpEmail", profile.getEmail()],
+    [".rpName", profile.getName()]
+  ]
+  signindata.forEach( function(a){ applyDOM(a[0],a[1]); } );
+
+  var hideonoff = [
+    ['.isLogin', function(elm){ elm.classList.remove("hide"); }],
+    ['.isNotLogin', function(elm){ elm.classList.add("hide"); }]
+  ]
+  hideonoff.forEach( function(a){  Array.prototype.map.call(document.querySelectorAll(a[0]), a[1]); });
+
+  var setvalue = [
+    ['#name', profile.getName()],
+    ['#email', profile.getEmail()]
+  ]
+  setvalue.forEach( function(a){ document.querySelector(a[0]).value = a[1]; } );
+}
+function onFailure(error) {
+  console.log(error);
+}
+function renderButton() {
+  gapi.signin2.render('g-signin2', {
+    'scope': 'profile',
+    'width': 120,
+    'height': 36,
+    'longtitle': false,
+    'theme': 'dark',
+    'onsuccess': onSuccess,
+    'onfailure': onFailure
+  });
+}
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+    var signoutdata = [
+      [".rpName", "Jane Doe"],
+      [".rpEmail", "jane.doe@example.com"]
+    ];
+    signoutdata.forEach( function(a){ applyDOM(a[0],a[1]); } );
+
+    var hideonoff = [
+      ['.isLogin', function(elm){ elm.classList.add("hide"); }],
+      ['.isNotLogin', function(elm){ elm.classList.remove("hide"); }]
+    ]
+    hideonoff.forEach( function(a){  Array.prototype.map.call(document.querySelectorAll(a[0]), a[1]); });
+
+  });
+}
+function applyDOM(a, b) {
+  if (document.querySelector(a)) {
+    var elms = document.querySelectorAll(a);
+    Array.prototype.map.call(elms, function(elm){
+      elm.innerHTML = b;
+    });
+  }
+}

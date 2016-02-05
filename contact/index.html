@@ -81,64 +81,6 @@
     <!--<script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script>-->
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>-->
     <script src="main.js"></script>
-    <script>
-      var aaa = [];
-      function onSuccess(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log("Name: " + profile.getName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
-        var signindata = [
-          [".rpEmail", profile.getEmail()],
-          [".rpName", profile.getName()]
-        ]
-        signindata.forEach( function(a){ applyDOM(a[0],a[1]); } );
-
-        Array.prototype.map.call(document.querySelectorAll('.isLogin'), function(elm){ elm.classList.remove("hide"); });
-        Array.prototype.map.call(document.querySelectorAll('.isNotLogin'), function(elm){ elm.classList.add("hide"); });
-
-        document.querySelector('#name').value = profile.getName();
-        document.querySelector('#email').value = profile.getEmail();
-      }
-      function onFailure(error) {
-        console.log(error);
-      }
-      function renderButton() {
-        gapi.signin2.render('g-signin2', {
-          'scope': 'profile',
-          'width': 120,
-          'height': 36,
-          'longtitle': false,
-          'theme': 'dark',
-          'onsuccess': onSuccess,
-          'onfailure': onFailure
-        });
-      }
-      function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-          console.log('User signed out.');
-          var signoutdata = [
-            [".rpName", "Jane Doe"],
-            [".rpEmail", "jane.doe@example.com"]
-          ];
-          signoutdata.forEach( function(a){ applyDOM(a[0],a[1]); } );
-        });
-      }
-      function applyDOM(a, b) {
-        if (document.querySelector(a)) {
-          var elms = document.querySelectorAll(a);
-          Array.prototype.map.call(elms, function(elm){
-            elm.innerHTML = b;
-          });
-        }
-      }
-      document.addEventListener("DOMContentLoaded", function(event) {
-        //defaultdata.forEach( function(a){ applyDOM(a[0],a[1]); } );
-      });
-    </script>
     <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
   </body>
 </html>
