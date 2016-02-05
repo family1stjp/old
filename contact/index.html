@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="870409264193-gg5u0jrgpl12ed61k982216lap8nbna3.apps.googleusercontent.com">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="//family1.st/favicon.ico">
@@ -14,7 +16,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/css/doc.css" rel="stylesheet">
+    <link href="../css/doc.css" rel="stylesheet">
   </head>
 
   <body>
@@ -31,6 +33,10 @@
         <li class="nav-item active">
           <a class="nav-link" href="/contact/">Contact</a>
         </li>
+        <li class="nav-item pull-xs-right">
+        <div id="g-signin2"></div>
+        <!--<a href="#" onclick="signOut();">Sign out</a>-->
+        </li>
       </ul>
     </nav>
 
@@ -44,11 +50,13 @@
       <form id="contactform">
         <fieldset class="form-group">
           <label for="name">氏名</label>
-          <input type="text" class="form-control" id="name" placeholder="Jane Doe" required>
+          <p class="isLogin form-control-static hide"><span class="rpName"></span></p>
+          <input type="text" class="isNotLogin form-control" id="name" placeholder="Jane Doe" required>
         </fieldset>
         <fieldset class="form-group">
           <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" placeholder="jane.doe@example.com" required>
+          <p class="isLogin form-control-static hide"><span class="rpEmail"></span></p>
+          <input type="email" class="isNotLogin form-control" id="email" placeholder="jane.doe@example.com" required>
         </fieldset>
         <fieldset class="form-group">
           <label for="message">メッセージ</label>
@@ -69,7 +77,68 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
+    <!--<script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script>-->
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>-->
     <script src="main.js"></script>
+    <script>
+      var aaa = [];
+      function onSuccess(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log("Name: " + profile.getName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+        var signindata = [
+          [".rpEmail", profile.getEmail()],
+          [".rpName", profile.getName()]
+        ]
+        signindata.forEach( function(a){ applyDOM(a[0],a[1]); } );
+
+        Array.prototype.map.call(document.querySelectorAll('.isLogin'), function(elm){ elm.classList.remove("hide"); });
+        Array.prototype.map.call(document.querySelectorAll('.isNotLogin'), function(elm){ elm.classList.add("hide"); });
+
+        document.querySelector('#name').value = profile.getName();
+        document.querySelector('#email').value = profile.getEmail();
+      }
+      function onFailure(error) {
+        console.log(error);
+      }
+      function renderButton() {
+        gapi.signin2.render('g-signin2', {
+          'scope': 'profile',
+          'width': 120,
+          'height': 36,
+          'longtitle': false,
+          'theme': 'dark',
+          'onsuccess': onSuccess,
+          'onfailure': onFailure
+        });
+      }
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+          var signoutdata = [
+            [".rpName", "Jane Doe"],
+            [".rpEmail", "jane.doe@example.com"]
+          ];
+          signoutdata.forEach( function(a){ applyDOM(a[0],a[1]); } );
+        });
+      }
+      function applyDOM(a, b) {
+        if (document.querySelector(a)) {
+          var elms = document.querySelectorAll(a);
+          Array.prototype.map.call(elms, function(elm){
+            elm.innerHTML = b;
+          });
+        }
+      }
+      document.addEventListener("DOMContentLoaded", function(event) {
+        //defaultdata.forEach( function(a){ applyDOM(a[0],a[1]); } );
+      });
+    </script>
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
   </body>
 </html>
