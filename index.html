@@ -66,7 +66,8 @@
     {
       "@context": "http://schema.org",
       "@type": "Organization",
-      "name" : "NPO法人Family1st",
+      "name" : "Family1st",
+      "legalName": "NPO法人Family1st",
       "url": "https://family1st.jp",
       "logo": "https://family1.st/logo_simple.svg",
       "contactPoint" : [{
@@ -78,7 +79,38 @@
       "sameAs" : [
         "https://www.facebook.com/Family-1st-669194666453915/",
         "https://plus.google.com/+family1st"
+      ],
+      "member" : [
+        {"@id" : "http://plus.google.com/+小林照幸"},
+        {"@id" : "http://plus.google.com/+小林陽子"}
       ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "@id" : "http://plus.google.com/+小林照幸",
+      "name" : "小林照幸",
+      "url" : "http://plus.google.com/+小林照幸",
+      "sameAs" : [
+        "https://www.facebook.com/kobayashi.teruyuki",
+        "https://twitter.com/koba_ninkigumi"
+      ],
+      "spouse": {"@id" : "http://plus.google.com/+小林陽子"}
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "@id" : "http://plus.google.com/+小林陽子",
+      "name" : "小林陽子",
+      "url" : "http://plus.google.com/+小林陽子",
+      "sameAs" : [
+        "https://www.facebook.com/profile.php?id=100004110242617"
+      ],
+      "spouse": {"@id" : "http://plus.google.com/+小林照幸"}
     }
     </script>
   </body>
