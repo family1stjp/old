@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             console.log(xhr.responseText);
-            document.querySelector('#contactform').classList.add("hide");
-            document.querySelector('#contactformsuccessalert').classList.remove("hide");
+            addClass(`#contactform`, `hide`);
+            removeClass(`#contactformsuccessalert`, `hide`);
           } else {
             console.error(xhr.statusText);
           }
@@ -59,24 +59,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
 ///// for Google Sign-In
-function onSuccess(googleUser) {
+function onGoogleSignIn(googleUser) {
   // Useful data for your client-side scripts:
   var profile = googleUser.getBasicProfile();
   console.log("ID: " + profile.getId()); // Don't send this directly to your server!
   console.log("Name: " + profile.getName());
   console.log("Image URL: " + profile.getImageUrl());
   console.log("Email: " + profile.getEmail());
+  //console.log("token: " + googleUser.getAuthResponse().id_token );
+
+  var ref = new Firebase("https://family1st.firebaseio.com");
+  ref.authWithOAuthToken("google", googleUser.getAuthResponse().access_token , function(error, authData) {
+    if (error) {
+      console.log("Login Failed!", error);
+    } else {
+      console.log("Authenticated successfully with payload:", authData);
+      // DBに登録
+      ref.child("users").child(authData.uid).set({
+        provider: authData.provider,
+        name: getName(authData),
+        email: getEmail(authData),
+        timestamp: Firebase.ServerValue.TIMESTAMP
+      });
+    }
+  });
+
   var signindata = [
     [".rpEmail", profile.getEmail()],
     [".rpName", profile.getName()]
   ]
   signindata.forEach( function(a){ applyDOM(a[0],a[1]); } );
 
-  var hideonoff = [
-    ['.isLogin', function(elm){ elm.classList.remove("hide"); }],
-    ['.isNotLogin', function(elm){ elm.classList.add("hide"); }]
-  ]
-  hideonoff.forEach( function(a){  Array.prototype.map.call(document.querySelectorAll(a[0]), a[1]); });
+  removeClass(".isLogin", "hide");
+  addClass(".isNotLogin", "hide");
 
   var setvalue = [
     ['#name', profile.getName()],
@@ -84,7 +99,7 @@ function onSuccess(googleUser) {
   ]
   setvalue.forEach( function(a){ document.querySelector(a[0]).value = a[1]; } );
 }
-function onFailure(error) {
+function onGoogleSignInFailure(error) {
   console.log(error);
 }
 function renderButton() {
@@ -94,8 +109,8 @@ function renderButton() {
     'height': 36,
     'longtitle': false,
     'theme': 'dark',
-    'onsuccess': onSuccess,
-    'onfailure': onFailure
+    'onsuccess': onGoogleSignIn,
+    'onfailure': onGoogleSignInFailure
   });
 }
 function signOut() {
@@ -108,19 +123,64 @@ function signOut() {
     ];
     signoutdata.forEach( function(a){ applyDOM(a[0],a[1]); } );
 
-    var hideonoff = [
-      ['.isLogin', function(elm){ elm.classList.add("hide"); }],
-      ['.isNotLogin', function(elm){ elm.classList.remove("hide"); }]
-    ]
-    hideonoff.forEach( function(a){  Array.prototype.map.call(document.querySelectorAll(a[0]), a[1]); });
+    addClass(".isLogin", "hide");
+    removeClass(".isNotLogin", "hide");
 
   });
 }
+
+///// for Firebase
+function getName(authData) {
+  switch (authData.provider) {
+    case 'password':
+      return authData.password.email.replace(/@.*/, '');
+    case 'twitter':
+      return authData.twitter.displayName;
+    case 'facebook':
+      return authData.facebook.displayName;
+    case 'google':
+      return authData.google.displayName;
+  }
+}
+
+function getEmail(authData) {
+  switch (authData.provider) {
+    case 'password':
+      return authData.password.email;
+    case 'twitter':
+      return authData.twitter.email;
+    case 'facebook':
+      return authData.facebook.email;
+    case 'google':
+      return authData.google.email;
+  }
+}
+
+///// for DOM
+
 function applyDOM(a, b) {
   if (document.querySelector(a)) {
     var elms = document.querySelectorAll(a);
     Array.prototype.map.call(elms, function(elm){
       elm.innerHTML = b;
+    });
+  }
+}
+
+function addClass(a, b) {
+  if (document.querySelector(a)) {
+    var elms = document.querySelectorAll(a);
+    Array.prototype.map.call(elms, function(elm){
+      elm.classList.add(b);
+    });
+  }
+}
+
+function removeClass(a, b) {
+  if (document.querySelector(a)) {
+    var elms = document.querySelectorAll(a);
+    Array.prototype.map.call(elms, function(elm){
+      elm.classList.remove(b);
     });
   }
 }
