@@ -3,7 +3,7 @@
 ///// for Bootstrap
 document.addEventListener("DOMContentLoaded", function(event) {
 
-  var email = document.querySelector('#name');
+  var name = document.querySelector('#name');
   var email = document.querySelector('#email');
   var elms = [email];
 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     if (email.checkValidity()) {
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "https://family1st-contact.appspot.com/send", true);
+      xhr.open("POST", "https://family1st-regist.appspot.com/guest", true);
       xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhr.onload = function (e) {
         if (xhr.readyState === 4) {
