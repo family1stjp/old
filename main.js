@@ -31,6 +31,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   });
 
+
+
+  document.querySelector('#contactform').addEventListener('submit', function(event) {
+
+    return false;
+    
+  }, false);
+
   document.querySelector('#msgSubmitBtn').addEventListener('click', function(event) {
 
     var elms = {"email": email};
