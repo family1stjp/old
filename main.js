@@ -45,8 +45,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       };
       xhr.send(JSON.stringify({
         //message: message.value,
-        email: email.value,
-        name: name.value
+        //email: email.value,
+        //name: name.value
+        email: email.value
       }));
 
     }
