@@ -49,27 +49,29 @@
       </div>
 
       <div class="starter-template">
-        <dt>メンバー登録フォーム</dt>
-        <dd>メールアドレスを登録してメンバー限定のお知らせを受け取る</dd>
-        <form class="form-inline" id="contactform" onSubmit="return false;">
-          <div class="form-group">
-            <label class="sr-only" for="exampleInputAmount">Email</label>
-            <div class="input-group">
-              <div class="input-group-addon">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" data-icon="envelope-closed" data-container-transform="translate(0 1)" viewBox="0 0 16 16">
-                  <path d="M0 2v2l8 4 8-4v-2h-16zm0 4v8h16v-8l-8 4-8-4z" fill="#666"/>
-                </svg>
+        <div id="memberregistform">
+          <dt>メンバー登録フォーム</dt>
+          <dd>メールアドレスを登録してメンバー限定のお知らせを受け取る</dd>
+          <form class="form-inline" id="contactform" onSubmit="return false;">
+            <div class="form-group">
+              <label class="sr-only" for="exampleInputAmount">Email</label>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" data-icon="envelope-closed" data-container-transform="translate(0 1)" viewBox="0 0 16 16">
+                    <path d="M0 2v2l8 4 8-4v-2h-16zm0 4v8h16v-8l-8 4-8-4z" fill="#666"/>
+                  </svg>
+                </div>
+                <input type="email" class="form-control" id="email" placeholder="メールアドレス">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" id="msgSubmitBtn" type="button">登録</button>
+                </span>
               </div>
-              <input type="email" class="form-control" id="email" placeholder="メールアドレス">
-              <span class="input-group-btn">
-                <button class="btn btn-primary" id="msgSubmitBtn" type="button">登録</button>
-              </span>
             </div>
-          </div>
-        </form>
+          </form>
 
-        <div class="alert alert-success hide" id="contactformsuccessalert" role="alert">
-          メールアドレスの登録が完了しました。
+          <div class="alert alert-success hide" id="contactformsuccessalert" role="alert">
+            メールアドレスの登録が完了しました。
+          </div>
         </div>
 
       </div>

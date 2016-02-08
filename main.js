@@ -3,6 +3,11 @@
 ///// for Bootstrap
 document.addEventListener("DOMContentLoaded", function(event) {
 
+  if ( localStorage.getItem("registeredGuestMember") ){
+    var a = document.querySelector('#memberregistform');
+    a.classList.add("hide");
+  }
+
   var name = document.querySelector('#name');
   var email = document.querySelector('#email');
   var elms = [email];
@@ -62,6 +67,7 @@ function sendVal(elms){
         console.log(xhr.responseText);
         addClass(`#contactform`, `hide`);
         removeClass(`#contactformsuccessalert`, `hide`);
+        localStorage.setItem("registeredGuestMember", true);
       } else {
         console.error(xhr.statusText);
       }
@@ -85,22 +91,25 @@ function onGoogleSignIn(googleUser) {
   console.log("Email: " + profile.getEmail());
   //console.log("token: " + googleUser.getAuthResponse().id_token );
 
-  var ref = new Firebase("https://family1st.firebaseio.com");
-  ref.authWithOAuthToken("google", googleUser.getAuthResponse().access_token , function(error, authData) {
-    if (error) {
-      console.log("Login Failed!", error);
-    } else {
-      console.log("Authenticated successfully with payload:", authData);
-      // DBに登録
-      ref.child("users").child(authData.uid).set({
-        provider: authData.provider,
-        name: getName(authData),
-        email: getEmail(authData),
-        member: "guest",
-        timestamp: Firebase.ServerValue.TIMESTAMP
-      });
-    }
-  });
+  if ( !localStorage.getItem("registeredFireBase") ){
+    var ref = new Firebase("https://family1st.firebaseio.com");
+    ref.authWithOAuthToken("google", googleUser.getAuthResponse().access_token , function(error, authData) {
+      if (error) {
+        console.log("Login Failed!", error);
+      } else {
+        console.log("Authenticated successfully with payload:", authData);
+        // DBに登録
+        ref.child("users").child(authData.uid).set({
+          provider: authData.provider,
+          name: getName(authData),
+          email: getEmail(authData),
+          member: "guest",
+          timestamp: Firebase.ServerValue.TIMESTAMP
+        });
+        localStorage.setItem("registeredFireBase", true);
+      }
+    });
+  }
 
   var signindata = [
     [".rpEmail", profile.getEmail()],
