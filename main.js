@@ -28,35 +28,52 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   document.querySelector('#msgSubmitBtn').addEventListener('click', function(event) {
 
+    var elms = {"email": email};
     if (email.checkValidity()) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "https://family1st-regist.appspot.com/guest", true);
-      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      xhr.onload = function (e) {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            console.log(xhr.responseText);
-            addClass(`#contactform`, `hide`);
-            removeClass(`#contactformsuccessalert`, `hide`);
-          } else {
-            console.error(xhr.statusText);
-          }
-        }
-      };
-      xhr.send(JSON.stringify({
-        //message: message.value,
-        //email: email.value,
-        //name: name.value
-        email: email.value
-      }));
-
+      sendVal(elms);
     }
 
     event.preventDefault();
   }, false);
 
+  document.querySelector('#email').addEventListener('keydown', function(event) {
+
+    if(event.keyCode == 13){
+      var elms = {"email": email};
+      if (email.checkValidity()) {
+        sendVal(elms);
+      }
+      event.preventDefault();
+    }
+
+  }, false);
+
+
 });
 
+
+function sendVal(elms){
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://family1st-regist.appspot.com/guest", true);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+        addClass(`#contactform`, `hide`);
+        removeClass(`#contactformsuccessalert`, `hide`);
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.send(JSON.stringify({
+    //message: message.value,
+    //email: email.value,
+    //name: name.value
+    email: elms['email'].value
+  }));
+}
 
 ///// for Google Sign-In
 function onGoogleSignIn(googleUser) {
