@@ -31,12 +31,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   });
 
-
-
   document.querySelector('#contactform').addEventListener('submit', function(event) {
-
     return false;
-    
   }, false);
 
   document.querySelector('#msgSubmitBtn').addEventListener('click', function(event) {
@@ -67,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 function sendVal(elms){
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "https://family1st-regist.appspot.com/guest", true);
+  xhr.open("POST", "https://family1st-regist.appspot.com/regist/guest", true);
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhr.onload = function (e) {
     if (xhr.readyState === 4) {
