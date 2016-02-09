@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     evts.map(function(evt){
 
       elm.addEventListener(evt, function( event ) {
-        console.log(event.target);
+        //console.log(event.target);
         if (elm !== null && elm.checkValidity()){
           elm.parentElement.classList.remove("has-warning");
           elm.classList.remove("form-control-warning");
