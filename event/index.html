@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -10,7 +11,7 @@
     <meta name="author" content="">
     <link rel="icon" href="//family1.st/favicon.ico">
 
-    <title>Family1st Contact</title>
+    <title>Family1st Regist Event</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet">
@@ -43,30 +44,28 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Family1st コンタクトフォーム</h1>
-        <p class="lead">あなたのメッセージをお待ちしております。</p>
+        <h1>キャンセル待ち登録フォーム</h1>
+        <p class="lead">お申し込み状況によりましては追加開催の可能性もございますので<br>ご案内を希望される方は予約登録してお待ちください。</p>
       </div>
 
-      <form id="contactform">
+      <form id="registeventform" class="form-inline" style="text-align:center">
+
         <fieldset class="form-group">
-          <label for="name">氏名</label>
+          <label class="sr-only" for="name">氏名</label>
           <p class="isLogin form-control-static hide"><span class="rpName"></span></p>
-          <input type="text" class="isNotLogin form-control" id="name" placeholder="Jane Doe" required>
+          <input type="text" class="isNotLogin form-control" id="name" placeholder="氏名" required>
         </fieldset>
+
         <fieldset class="form-group">
-          <label for="email">Email</label>
+          <label class="sr-only" for="email">Email</label>
           <p class="isLogin form-control-static hide"><span class="rpEmail"></span></p>
-          <input type="email" class="isNotLogin form-control" id="email" placeholder="jane.doe@example.com" required>
+          <input type="email" class="isNotLogin form-control" id="email" placeholder="メールアドレス" required>
         </fieldset>
-        <fieldset class="form-group">
-          <label for="message">メッセージ</label>
-          <textarea class="form-control" id="message" rows="3" placeholder="Message..." required></textarea>
-        </fieldset>
-        <button type="submit" id="msgSubmitBtn" class="btn btn-primary">送信</button>
+        <button type="submit" id="msgSubmitBtn" class="btn btn-primary">登録申込</button>
       </form>
 
-      <div class="alert alert-success hide" id="contactformsuccessalert" role="alert">
-        メッセージの送信が完了しました。
+      <div class="alert alert-success hide" id="registeventformsuccessalert" role="alert">
+        登録申し込みが完了しました。
       </div>
 
     </div><!-- /.container -->

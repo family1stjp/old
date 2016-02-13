@@ -130,20 +130,7 @@ function onGoogleSignIn(googleUser) {
   ]
   setvalue.forEach( function(a){ document.querySelector(a[0]).value = a[1]; } );
 }
-function onGoogleSignInFailure(error) {
-  console.log(error);
-}
-function renderButton() {
-  gapi.signin2.render('g-signin2', {
-    'scope': 'profile',
-    'width': 120,
-    'height': 36,
-    'longtitle': false,
-    'theme': 'dark',
-    'onsuccess': onGoogleSignIn,
-    'onfailure': onGoogleSignInFailure
-  });
-}
+
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
@@ -158,60 +145,4 @@ function signOut() {
     removeClass(".isNotLogin", "hide");
 
   });
-}
-
-///// for Firebase
-function getName(authData) {
-  switch (authData.provider) {
-    case 'password':
-      return authData.password.email.replace(/@.*/, '');
-    case 'twitter':
-      return authData.twitter.displayName;
-    case 'facebook':
-      return authData.facebook.displayName;
-    case 'google':
-      return authData.google.displayName;
-  }
-}
-
-function getEmail(authData) {
-  switch (authData.provider) {
-    case 'password':
-      return authData.password.email;
-    case 'twitter':
-      return authData.twitter.email;
-    case 'facebook':
-      return authData.facebook.email;
-    case 'google':
-      return authData.google.email;
-  }
-}
-
-///// for DOM
-
-function applyDOM(a, b) {
-  if (document.querySelector(a)) {
-    var elms = document.querySelectorAll(a);
-    Array.prototype.map.call(elms, function(elm){
-      elm.innerHTML = b;
-    });
-  }
-}
-
-function addClass(a, b) {
-  if (document.querySelector(a)) {
-    var elms = document.querySelectorAll(a);
-    Array.prototype.map.call(elms, function(elm){
-      elm.classList.add(b);
-    });
-  }
-}
-
-function removeClass(a, b) {
-  if (document.querySelector(a)) {
-    var elms = document.querySelectorAll(a);
-    Array.prototype.map.call(elms, function(elm){
-      elm.classList.remove(b);
-    });
-  }
 }

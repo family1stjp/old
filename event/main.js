@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   var name = document.querySelector('#name');
   var email = document.querySelector('#email');
-  var message = document.querySelector('#message');
-  var elms = [name, email, message];
+  var elms = [name, email];
 
   Array.prototype.map.call(elms, function(elm){
     var evts = ["keyup", "blur"];
@@ -29,23 +28,31 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   document.querySelector('#msgSubmitBtn').addEventListener('click', function(event) {
 
-    if (name.checkValidity() && email.checkValidity() && message.checkValidity()) {
+    if (name.checkValidity() && email.checkValidity() ) {
+
+      var urlvars = getUrlVars();
+      var affiliateid =
+      (typeof urlvars.af !== "undefined") ? urlvars.af : '';
+      var eventid =
+      (typeof urlvars.eventid !== "undefined") ? urlvars.eventid : '';
+
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "https://family1st-contact.appspot.com/send", true);
+      xhr.open("POST", "https://family1st-regist.appspot.com/regist/event", true);
       xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhr.onload = function (e) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             console.log(xhr.responseText);
-            addClass(`#contactform`, `hide`);
-            removeClass(`#contactformsuccessalert`, `hide`);
+            addClass(`#registeventform`, `hide`);
+            removeClass(`#registeventformsuccessalert`, `hide`);
           } else {
             console.error(xhr.statusText);
           }
         }
       };
       xhr.send(JSON.stringify({
-        message: message.value,
+        eventid: eventid,
+        affiliateid: affiliateid,
         email: email.value,
         name: name.value
       }));
